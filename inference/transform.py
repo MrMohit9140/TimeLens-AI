@@ -57,7 +57,7 @@ def _transform_hf(image_path, prompt: str) -> bytes:
             prompt=hf_prompt,
             input_images=[{"image": handle_file(str(image_path))}],
             seed=random.randint(0, 2**31 - 1),
-            resolution=HF_RESOLUTION,
+            resolution=int(HF_RESOLUTION),
             aspect_ratio="Auto",
             api_name="/generate",
         )
