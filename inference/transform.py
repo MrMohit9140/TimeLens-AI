@@ -66,7 +66,7 @@ def _transform_hf(image_path, prompt: str) -> bytes:
         raise
     except Exception as e:
         msg = str(e).lower()
-        log.error("HF Space call failed: %s: %s", type(e).__name__, e)
+    log.error("HF Space call failed: %s: %s", type(e).__name__, e)
         if "quota" in msg or "zerogpu" in msg or "gpu" in msg:
             raise TransformError("The free GPU limit is used up for now. Please try again later.")
         if "timeout" in msg or "timed out" in msg:
