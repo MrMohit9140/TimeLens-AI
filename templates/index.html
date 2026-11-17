@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TimeLens AI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="hero">
+  <h1>TimeLens <span>AI</span></h1>
+  <p class="tagline">Your Photo. Another Era.</p>
+  <p class="desc">Upload a photograph, choose a year, and see yourself in a realistic photo from that time —
+    with period fashion, hair, makeup, lighting and camera look.</p>
+</header>
+
+<main>
+  <section class="card" id="form-card">
+    <div id="dropzone" class="dropzone">
+      <input type="file" id="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" hidden>
+      <div id="drop-text"><strong>Click to upload</strong> or drag a photo here<br><small>JPG, PNG or WEBP · max 10 MB · a clear face photo works best</small></div>
+      <div id="preview-wrap" hidden>
+        <img id="preview" alt="Preview">
+        <div class="row"><button type="button" id="replace" class="ghost">Replace</button><button type="button" id="remove" class="ghost">Remove</button></div>
+      </div>
+    </div>
+
+    <label for="year">Choose a year</label>
+    <select id="year">
+      {% for y in years|reverse %}<option value="{{ y }}" {% if y == default_year %}selected{% endif %}>{{ y }}</option>{% endfor %}
+    </select>
+
+    <p id="error" class="error" hidden></p>
+    <button id="generate" class="primary" disabled>Generate</button>
+  </section>
+
+  <section id="progress" class="card center" hidden>
+    <div class="spinner"></div>
+    <p id="progress-text">Analyzing your photo…</p>
+    <small>This usually takes 20–60 seconds.</small>
+  </section>
+
+  <section id="result" class="card" hidden>
+    <h2>Your photo, <span id="result-year"></span></h2>
+    <div class="compare">
+      <figure><img id="img-before" alt="Original"><figcaption>Original</figcaption></figure>
+      <figure><img id="img-after" alt="Generated"><figcaption>AI-generated · <span id="cap-year"></span></figcaption></figure>
+    </div>
+    <p id="classifier-note" class="note"></p>
+    <div class="row center">
+      <a id="download" class="primary btn" href="#">Download</a>
+      <button id="again" class="ghost">Generate another</button>
+    </div>
+  </section>
+</main>
+
+<footer>Photos are processed temporarily and deleted automatically. Results are AI-generated and may not perfectly match your identity.</footer>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
