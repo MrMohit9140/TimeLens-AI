@@ -14,7 +14,7 @@ from pathlib import Path
 from flask import Flask, render_template, request, jsonify, send_from_directory, abort
 from PIL import Image, UnidentifiedImageError
 
-from inference.prompts import build_prompt, SUPPORTED_YEARS, DEFAULT_YEAR
+from inference.prompts import build_prompt, YEAR_OPTIONS, DEFAULT_YEAR
 from inference.transform import transform_image, TransformError
 from inference import classifier
 
@@ -28,7 +28,7 @@ ALLOWED_EXT = {"jpg", "jpeg", "png", "webp"}
 MAX_UPLOAD_MB = 10
 MAX_SIDE = 1536                 # uploaded image is downscaled to this longest side
 FILE_TTL_SECONDS = 30 * 60      # temp files are deleted after 30 minutes
-RATE_LIMIT = int(os.environ.get("RATE_LIMIT_PER_HOUR", "6"))  # protects your API credits
+RATE_LIMIT = int(os.environ.get("RATE_LIMIT_PER_HOUR", "6").strip().strip('"\''))  # protects your API credits
 
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = MAX_UPLOAD_MB * 1024 * 1024
@@ -67,7 +67,7 @@ def rate_limited(ip: str) -> bool:
 
 @app.route("/")
 def index():
-    years = list(range(SUPPORTED_YEARS[0], SUPPORTED_YEARS[1] + 1))
+    years = YEAR_OPTIONS
     return render_template("index.html", years=years, default_year=DEFAULT_YEAR)
 
 
@@ -94,8 +94,8 @@ def generate():
         year = int(request.form.get("year", DEFAULT_YEAR))
     except ValueError:
         return jsonify(error="Invalid year."), 400
-    if not (SUPPORTED_YEARS[0] <= year <= SUPPORTED_YEARS[1]):
-        return jsonify(error=f"Year must be between {SUPPORTED_YEARS[0]} and {SUPPORTED_YEARS[1]}."), 400
+    if year not in YEAR_OPTIONS:
+        return jsonify(error="Please choose one of the listed years."), 400
 
     job = uuid.uuid4().hex
     upload_path = UPLOAD_DIR / f"{job}.jpg"
