@@ -14,6 +14,9 @@ import random
 import requests
 from PIL import Image
 
+import logging
+log = logging.getLogger("timelens")
+
 # ---------- settings ----------
 HF_SPACE = os.environ.get("HF_SPACE", "linoyts/qwen-image-2-1-realtime")
 HF_RESOLUTION = os.environ.get("HF_RESOLUTION", "1024")   # '512', '1024' or '1536'
