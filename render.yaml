@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: timelens-ai
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --workers 1 --threads 4 --timeout 180
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: REPLICATE_API_TOKEN
+        sync: false
+      - key: RATE_LIMIT_PER_HOUR
+        value: "6"
