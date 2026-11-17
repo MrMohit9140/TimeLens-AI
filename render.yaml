@@ -9,7 +9,11 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.9
-      - key: REPLICATE_API_TOKEN
+      - key: PROVIDER
+        value: hf_space
+      - key: HF_SPACE
+        value: linoyts/qwen-image-2-1-realtime
+      - key: HF_TOKEN
         sync: false
       - key: RATE_LIMIT_PER_HOUR
         value: "6"
