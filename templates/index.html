@@ -27,7 +27,7 @@
 
     <label for="year">Choose a year</label>
     <select id="year">
-      {% for y in years|reverse %}<option value="{{ y }}" {% if y == default_year %}selected{% endif %}>{{ y }}</option>{% endfor %}
+      {% for y in years %}<option value="{{ y }}" {% if y == default_year %}selected{% endif %}>{{ y }}</option>{% endfor %}
     </select>
 
     <p id="error" class="error" hidden></p>
