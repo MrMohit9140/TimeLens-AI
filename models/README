@@ -1,0 +1,5 @@
+# models/
+
+Put your trained classifier here as `timelens_resnet50_1980s.pth`
+(saved in Colab with `torch.save(model.state_dict(), "timelens_resnet50_1980s.pth")`).
+The app runs without it; the classifier step is simply skipped.
